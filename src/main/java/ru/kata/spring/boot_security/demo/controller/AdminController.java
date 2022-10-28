@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.model.MyUser;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import java.util.List;
@@ -32,13 +32,13 @@ public class AdminController {
     }
 
     @GetMapping("create")
-    public String createUserForm(User user, Model model) {
+    public String createUserForm(MyUser user, Model model) {
         model.addAttribute("roleList", userService.getListRoles());
         return "create";
     }
 
     @PostMapping("create")
-    public String createUser(User user) {
+    public String createUser(MyUser user) {
         List<String> list1 = user.getRoles().stream().map(r -> r.getRole()).collect(Collectors.toList());
         List<Role> list2 = userService.getListByRole(list1);
         user.setRoles(list2);
@@ -48,14 +48,14 @@ public class AdminController {
 
     @GetMapping("update/{id}")
     public String updateUserForm(@PathVariable("id") int id, Model model) {
-        User user = userService.getUser(id);
+        MyUser user = userService.getUser(id);
         model.addAttribute("user", user);
         model.addAttribute("roleList", userService.getListRoles());
         return "update";
     }
 
     @PostMapping("update")
-    public String updateUser(User user) {
+    public String updateUser(MyUser user) {
         List<String> list1 = user.getRoles().stream().map(r -> r.getRole()).collect(Collectors.toList());
         List<Role> list2 = userService.getListByRole(list1);
         user.setRoles(list2);

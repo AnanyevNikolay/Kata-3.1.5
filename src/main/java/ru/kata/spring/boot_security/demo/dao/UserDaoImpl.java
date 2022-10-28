@@ -2,7 +2,7 @@ package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.model.MyUser;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,36 +21,36 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
+    public List<MyUser> getAllUsers() {
+        return entityManager.createQuery("SELECT u FROM MyUser u", MyUser.class).getResultList();
     }
 
     @Override
-    public void save(User user) {
+    public void save(MyUser user) {
         entityManager.persist(user);
     }
 
     @Override
-    public User getUser(int id) {
-        TypedQuery<User> query = entityManager.createQuery(
-                "select u from User u where u.id = :id", User.class);
+    public MyUser getUser(int id) {
+        TypedQuery<MyUser> query = entityManager.createQuery(
+                "select u from MyUser u where u.id = :id", MyUser.class);
         query.setParameter("id", id);
         return query.getSingleResult();
     }
 
     @Override
-    public void update(int id, User updateUser) {
+    public void update(int id, MyUser updateUser) {
         entityManager.merge(updateUser);
     }
 
     @Override
     public void delete(int id) {
-        User user = getUser(id);
+        MyUser user = getUser(id);
         entityManager.remove(user);
     }
 
-    public User getByName(String name) {
-        return (User) entityManager.createQuery("select u from User u join fetch u.roles where u.name = :name", User.class)
+    public MyUser getByName(String name) {
+        return (MyUser) entityManager.createQuery("select u from MyUser u join fetch u.roles where u.name = :name", MyUser.class)
                 .setParameter("name", name);
     }
 }

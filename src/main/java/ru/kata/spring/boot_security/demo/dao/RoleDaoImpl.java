@@ -13,10 +13,6 @@ public class RoleDaoImpl implements RoleDao{
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    public RoleDaoImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     @Override
     public Role getByIdRole(Long id) {

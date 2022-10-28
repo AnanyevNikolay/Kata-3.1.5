@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.RoleDaoImpl;
 import ru.kata.spring.boot_security.demo.dao.UserDaoImpl;
 import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.model.MyUser;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,14 +63,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<MyUser> getAllUsers() {
         return userDao.getAllUsers();
     }
 
     @Override
     @Transactional
-    public boolean save(User user) {
-        User userPrim = userDao.getUser(user.getId());
+    public boolean save(MyUser user) {
+        MyUser userPrim = userDao.getUser(user.getId());
         if (userPrim != null) {
             return false;
         }
@@ -79,13 +80,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(int id) {
+    public MyUser getUser(int id) {
         return userDao.getUser(id);
     }
 
     @Override
     @Transactional
-    public void update(int id, User updateUser) {
+    public void update(int id, MyUser updateUser) {
         userDao.update(id, updateUser);
     }
 
@@ -95,13 +96,13 @@ public class UserServiceImpl implements UserService {
         userDao.delete(id);
     }
 
-    public User getByName(String name) {
+    public MyUser getByName(String name) {
         return userDao.getByName(name);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = getByName(username);
+        MyUser user = getByName(username);
         if (user == null) {
             throw new UsernameNotFoundException(username + " not found");
         }
