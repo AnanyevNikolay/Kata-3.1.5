@@ -12,17 +12,22 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.RoleDaoImpl;
 import ru.kata.spring.boot_security.demo.dao.UserDaoImpl;
 import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.MyUser;
+import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final RoleDaoImpl roleDao;
     private final UserDaoImpl userDao;
+
+    public PasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder(8);
+    }
 
     @Autowired
     public UserServiceImpl(RoleDaoImpl roleDao, UserDaoImpl userDao) {
@@ -30,32 +35,16 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
     }
 
-    public PasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder(8);
-    }
-
     @Override
     public boolean addRole(Role role) {
-        Role userPrim = roleDao.getByNameRole(role.getRole());
-        if(userPrim != null) {return false;}
+        Role userPrimary = roleDao.getByName(role.getRole());
+        if(userPrimary != null) {return false;}
         roleDao.add(role);
         return true;
     }
 
     @Override
-    public Role getByNameRole(String name) {
-        return roleDao.getByNameRole(name);
-    }
-
-    @Override
-    public List<Role> getListRoles() {
-        return roleDao.getListRoles();
-    }
-
-    @Override
-    public Role getByIdRole(Long id) {
-        return roleDao.getByIdRole(id);
-    }
+    public List<Role> getListRoles() { return roleDao.getListRoles(); }
 
     @Override
     public List<Role> getListByRole(List<String> name) {
@@ -63,55 +52,56 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<MyUser> getAllUsers() {
-        return userDao.getAllUsers();
-    }
-
-    @Override
-    @Transactional
-    public boolean save(MyUser user) {
-        MyUser userPrim = userDao.getUser(user.getId());
-        if (userPrim != null) {
-            return false;
-        }
+    public boolean add(User user) {
+        User userPrimary = userDao.getByName(user.getUsername());
+        if(userPrimary != null) {return false;}
         user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
-        userDao.save(user);
+        userDao.add(user);
         return true;
     }
 
     @Override
-    public MyUser getUser(int id) {
-        return userDao.getUser(id);
+    public List<User> getListUsers() {
+        return userDao.getListUsers();
     }
 
     @Override
-    @Transactional
-    public void update(int id, MyUser updateUser) {
-        userDao.update(id, updateUser);
-    }
-
-    @Override
-    @Transactional
-    public void delete(int id) {
+    public void delete(Long id) {
         userDao.delete(id);
     }
 
-    public MyUser getByName(String name) {
-        return userDao.getByName(name);
+    @Override
+    public void update(User user) {
+        User userPrimary = getById(user.getId());
+        System.out.println(userPrimary);
+        System.out.println(user);
+        if(!userPrimary.getPassword().equals(user.getPassword())) {
+            user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
+        }
+        userDao.update(user);
+    }
+
+    @Override
+    public User getById(Long id) {
+        return userDao.getById(id);
+    }
+
+    @Override
+    public User getByUsername(String userName) {
+        return userDao.getByName(userName);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        MyUser user = getByName(username);
-        if (user == null) {
+        User userPrimary = getByUsername(username);
+        if (userPrimary == null) {
             throw new UsernameNotFoundException(username + " not found");
         }
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
-                auth(user.getRoles()));
-        return userDetails;
+        UserDetails user = new org.springframework.security.core.userdetails.User(userPrimary.getUsername(), userPrimary.getPassword(), ath(userPrimary.getRoles()));
+        return userPrimary;
     }
 
-    private Collection<? extends GrantedAuthority> auth(Collection<Role> roles) {
+    private Collection<? extends GrantedAuthority> ath(Collection<Role> roles) {
         return roles.stream().map(r -> new SimpleGrantedAuthority(r.getRole()))
                 .collect(Collectors.toList());
     }

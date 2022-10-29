@@ -64,11 +64,14 @@
 
       <tr th:each="user : ${users}">
         <td th:text="${user.getId()}"></td>
-        <td th:text="${user.getName()}"></td>
+        <td th:text="${user.getUsername()}"></td>
         <td th:text="${user.password}"></td>
+        <td th:text="${user.city}"></td>
+        <td th:text="${user.phone}"></td>
+        <td th:text="${user.email}"></td>
         <td>
           <th:block th:each="msg : ${user.getRoles()}">
-            <li th:text="${msg.getRole()}"></li>
+            <li th:text="${msg.getNoPrefix()}"></li>
           </th:block>
         </td>
         <td><a th:href="@{admin/update/{id}(id=${user.getId()})}">Edit</a></td>

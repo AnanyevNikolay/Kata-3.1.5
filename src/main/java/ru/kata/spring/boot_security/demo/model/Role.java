@@ -6,30 +6,46 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "roles")
-
 public class Role implements GrantedAuthority {
-
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "role")
     private String role;
 
-    public Role() {}
+    public Role() {
+    }
 
     public Role(String role) {
         this.role = role;
     }
 
-    public int getId() {
+    public Role(Long id, String role) {
+        this.id = id;
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "role - " + role;
+    }
+
+    public String getNoPrefix() {
+        String prefix = "ROLE_";
+        return role.substring(prefix.length());
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getRole() {
-        return role;
-    }
+        return role; }
 
     public void setRole(String role) {
         this.role = role;
@@ -37,11 +53,6 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return getRole();
-    }
-
-    @Override
-    public String toString() {
-        return getRole();
+        return role;
     }
 }
