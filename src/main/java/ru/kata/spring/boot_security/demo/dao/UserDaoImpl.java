@@ -14,16 +14,15 @@ public class UserDaoImpl implements UserDao {
     private EntityManager entityManager;
 
     @Override
-    public User getByName(String username) {
-        return entityManager.createQuery("select u from User u join fetch u.roles where u.username = :id", User.class)
-                .setParameter("id", username)
+    public User getByName(String email) {
+        return entityManager.createQuery("select u from User u join fetch u.roles where u.email = :email", User.class)
+                .setParameter("email", email)
                 .getResultList().stream().findAny().orElse(null);
     }
 
     @Override
     public  void delete(Long id) {
-        User user = entityManager.find(User.class, id);
-        entityManager.remove(user);
+        entityManager.remove(getById(id));
     }
 
     @Override

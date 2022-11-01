@@ -16,17 +16,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "name")
+    private String firstName;
 
     @Column(name = "password")
     private String password;
 
     @Column(name = "city")
     private String city;
-
-    @Column(name = "phone")
-    private String phone;
 
     @Column(name = "email")
     private String email;
@@ -39,21 +36,19 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(String userName, String password, String city, String phone, String email, List<Role> roles) {
-        this.username = userName;
+    public User(String userName, String password, String city, String email, List<Role> roles) {
+        this.firstName = userName;
         this.password = password;
         this.city = city;
-        this.phone = phone;
         this.email = email;
         this.roles = roles;
     }
 
-    public User(Long id, String userName, String password, String city, String phone, String email, List<Role> roles) {
+    public User(Long id, String userName, String password, String city, String email, List<Role> roles) {
         this.id = id;
-        this.username = userName;
+        this.firstName = userName;
         this.password = password;
         this.city = city;
-        this.phone = phone;
         this.email = email;
         this.roles = roles;
     }
@@ -66,8 +61,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername(String userName) {
-        this.username = userName;
+    public void setFirstName(String userName) {
+        this.firstName = userName;
     }
 
     @Override
@@ -82,7 +77,11 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     @Override
@@ -113,14 +112,6 @@ public class User implements UserDetails {
         this.city = city;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -146,12 +137,22 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", username='" + firstName + '\'' +
                 ", password='" + password + '\'' +
                 ", city='" + city + '\'' +
-                ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", roles=" + getRoles() +
                 '}';
+    }
+
+    public String getShortRoles() {
+        if (roles.toString().equals("[ROLE_USER]")) {
+            return "USER";
+        } else if (roles.toString().equals("[ROLE_ADMIN]")) {
+            return "ADMIN";
+        } else if (roles.equals(null)) {
+            return null;
+        }
+        return "ADMIN USER";
     }
 }

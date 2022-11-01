@@ -73,8 +73,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(User user) {
         User userPrimary = getById(user.getId());
-        System.out.println(userPrimary);
-        System.out.println(user);
         if(!userPrimary.getPassword().equals(user.getPassword())) {
             user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
         }
@@ -87,15 +85,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByUsername(String userName) {
-        return userDao.getByName(userName);
+    public User getByUsername(String email) {
+        return userDao.getByName(email);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User userPrimary = getByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User userPrimary = getByUsername(email);
         if (userPrimary == null) {
-            throw new UsernameNotFoundException(username + " not found");
+            throw new UsernameNotFoundException(email + " not found");
         }
         UserDetails user = new org.springframework.security.core.userdetails.User(userPrimary.getUsername(), userPrimary.getPassword(), ath(userPrimary.getRoles()));
         return userPrimary;

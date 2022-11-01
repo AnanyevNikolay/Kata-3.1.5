@@ -1,25 +1,19 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.kata.spring.boot_security.demo.dao.UserDaoImpl;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.model.User;
 
-import java.security.Principal;
-
 @Controller
+@RequestMapping("/user")
 public class UserController {
-    private final UserDaoImpl userDao;
 
-    public UserController(UserDaoImpl userDao) {
-        this.userDao = userDao;
-    }
-
-    @GetMapping(value = "/user")
-    public String print(ModelMap model, Principal principal) {
-        User userDaoByName = userDao.getByName(principal.getName());
-        model.addAttribute("messages", userDaoByName);
+    @GetMapping
+    public String getUserPage(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         return "user";
     }
 }
