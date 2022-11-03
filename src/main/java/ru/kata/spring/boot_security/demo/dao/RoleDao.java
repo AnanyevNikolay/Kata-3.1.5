@@ -10,4 +10,6 @@ public interface RoleDao {
     Role getByName(String name);
     List<Role> getListByName(List<String> name);
     boolean add(Role user);
+
+    List<Role> getRolesListById(List<Long> roles);
 }

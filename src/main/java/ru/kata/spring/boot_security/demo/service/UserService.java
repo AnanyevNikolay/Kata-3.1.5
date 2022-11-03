@@ -10,10 +10,10 @@ public interface UserService extends UserDetailsService {
     boolean addRole(Role role);
     List<Role> getListRoles();
     List<Role> getListByRole(List<String> name);
-    boolean add(User user);
+    void add(User user, List<Role> role);
     List<User> getListUsers();
     void delete(Long id);
-    void update(User user);
+    void update(User user, List<Role> role);
     User getById(Long id);
     User getByUsername(String userName);
 }

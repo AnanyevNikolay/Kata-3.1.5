@@ -31,7 +31,7 @@
           <a class="nav-item nav-link" th:href="@{/user}">User</a>
         </div>
       </div>
-      <div class="col-10 px-0">
+      <div class="col-10 px-0" style="background-color:#f8f7f7; height:100vh">
         <div class="container-fluid">
           <h1 class="m-3 fw-bold">Admin panel</h1>
           <div class="tab-content" id="tabContent">
@@ -65,13 +65,18 @@
                 <input th:name="password" th:field="*{password}" th:type="password" class="form-control"
                        id="password"/>
                 <br>
-                <label for="exampleFormControlSelect2"><b>Role</b></label>
-                <select multiple size="2" name="select_role" class="form-control" id="exampleFormControlSelect2">
-                  <option th:each="role : ${newRole}"
-                          th:text="${role.getRole().equals('ROLE_ADMIN') ? 'ADMIN' : 'USER'}"
-                          th:value="${role.getRole()}">
-                  </option>
-                </select>
+                <div class="form-group text-center">
+                  <label for="rolesEdit"><b>Role</b></label>
+                  <select size="2" multiple
+                          class="form-control form-control-sm"
+                          id="rolesEdit" name="listRolesNew"
+                          required>
+                    <option th:each="oneRole : ${role}"
+                            th:text="${oneRole.getRole().substring(5)}"
+                            th:value="${oneRole.getId()}">Role
+                    </option>
+                  </select>
+                </div>
                 <br>
                 <button th:type="submit" class="btn btn-success btn-lg" value="Add new user">Add new user
                 </button>

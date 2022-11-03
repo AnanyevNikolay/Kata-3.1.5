@@ -22,13 +22,13 @@
     <div class="row h-100">
         <div class="p-0 col-2">
             <div class="nav flex-column nav-pills pt-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link" href="/admin" sec:authorize="hasRole('ADMIN')" role="tab"
+                <a class="nav-link" href="/admin" sec:authorize="hasRole('ADMIN')" sec:visible="hasRole('ADMIN')" role="tab"
                    aria-controls="v-pills-home" aria-selected="true">Admin</a>
                 <a class="nav-link active"  role="tab"
                    aria-controls="v-pills-profile" aria-selected="false">User</a>
             </div>
         </div>
-        <div class="p-0 col-10 bg-light">
+        <div class="p-0 col-10 bg-light" style="background-color:#f8f7f7; height:100vh">
             <div class="tabs p-4">
                 <h1 class="m-3 fw-bold">User information page</h1>
                 <div class="pt-2 tab-content">
@@ -51,7 +51,7 @@
                                 <tr>
                                     <td th:text="${user.id}"></td>
                                     <td th:text="${user.email}"></td>
-                                    <td th:text="${user.name}"></td>
+                                    <td th:text="${user.firstName}"></td>
                                     <td th:text="${user.city}"></td>
                                     <td th:text="${user.getShortRoles()}"></td>
                                 </tr>

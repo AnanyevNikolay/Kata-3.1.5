@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
     private final RoleDaoImpl roleDao;
@@ -36,6 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean addRole(Role role) {
         Role userPrimary = roleDao.getByName(role.getRole());
         if(userPrimary != null) {return false;}
@@ -52,12 +52,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean add(User user) {
-        User userPrimary = userDao.getByName(user.getUsername());
-        if(userPrimary != null) {return false;}
+    @Transactional
+    public void add(User user, List<Role> role) {
+        user.setRoles(role);
         user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
         userDao.add(user);
-        return true;
     }
 
     @Override
@@ -66,16 +65,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         userDao.delete(id);
     }
 
     @Override
-    public void update(User user) {
-        User userPrimary = getById(user.getId());
-        if(!userPrimary.getPassword().equals(user.getPassword())) {
+    @Transactional
+    public void update(User user, List<Role> role) {
+        String password = getById(user.getId()).getPassword();
+        if (user.getPassword().isEmpty()){
+            user.setPassword(password);
+        } else {
             user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
         }
+        user.setRoles(role);
         userDao.update(user);
     }
 
