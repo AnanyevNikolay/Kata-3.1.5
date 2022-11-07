@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -13,10 +14,12 @@ import java.util.List;
 public class Init {
 
     private UserServiceImpl userService;
+    private RoleServiceImpl roleService;
 
     @Autowired
-    public Init(UserServiceImpl userService) {
+    public Init(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @PostConstruct
@@ -24,8 +27,8 @@ public class Init {
         Role role1 = new Role("ROLE_ADMIN");
         Role role2 = new Role("ROLE_USER");
 
-        userService.addRole(role1);
-        userService.addRole(role2);
+        roleService.add(role1);
+        roleService.add(role2);
 
         List<Role> roleAdmin = new ArrayList<>();
         List<Role> roleUser = new ArrayList<>();
@@ -41,9 +44,9 @@ public class Init {
         User user3 = new User("user2", "user2", "Kaluga", "user2@gmail.com", roleUser);
         User user4 = new User("admin2", "admin2", "Kaluga", "admin2@gmail.com", allRoles);
 
-        userService.add(user1, roleAdmin);
-        userService.add(user2, roleUser);
-        userService.add(user3, roleUser);
-        userService.add(user4, allRoles);
+        userService.add(user1);
+        userService.add(user2);
+        userService.add(user3);
+        userService.add(user4);
     }
 }

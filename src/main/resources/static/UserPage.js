@@ -7,7 +7,7 @@ async function thisUser() {
         .then(data => {
             // Добавляем информацию в шапку
             $('#headerUsername').append(data.username);
-            let roles = data.roles.map(role => " " + role.name.substring(5));
+            let roles = data.roles.map(role => " " + role.role.substring(5));
             $('#headerRoles').append(roles);
 
             //Добавляем информацию в таблицу

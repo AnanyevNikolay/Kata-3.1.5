@@ -28,7 +28,7 @@ async function showEditModal(id) {
                     }
                 }
                 let el = document.createElement("option");
-                el.text = role.name.substring(5);
+                el.text = role.role.substring(5);
                 el.value = role.id;
                 if (selectedRole) el.selected = true;
                 $('#rolesEditUser')[0].appendChild(el);

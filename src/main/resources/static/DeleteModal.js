@@ -22,13 +22,13 @@ async function showDeleteModal(id) {
             roles.forEach(role => {
                 let selectedRole = false;
                 for (let i = 0; i < user.roles.length; i++) {
-                    if (user.roles[i].name === role.name) {
+                    if (user.roles[i].name === role.role) {
                         selectedRole = true;
                         break;
                     }
                 }
                 let el = document.createElement("option");
-                el.text = role.name.substring(5);
+                el.text = role.role.substring(5);
                 el.value = role.id;
                 if (selectedRole) el.selected = true;
                 $('#rolesDeleteUser')[0].appendChild(el);

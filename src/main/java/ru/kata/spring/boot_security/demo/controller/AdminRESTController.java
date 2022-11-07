@@ -41,13 +41,13 @@ public class AdminRESTController {
 
     @PostMapping("/users")
     public ResponseEntity<User> addNewUser(@RequestBody User user) {
-        userService.add(user, user.getRoles());
+        userService.add(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/users/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        userService.update(user, user.getRoles());
+        userService.update(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
