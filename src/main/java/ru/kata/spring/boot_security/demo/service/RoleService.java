@@ -12,4 +12,6 @@ public interface RoleService {
 
     List<Role> getRolesListById(List<Long> id);
 
+    Role getRoleById(Long id);
+
 }
