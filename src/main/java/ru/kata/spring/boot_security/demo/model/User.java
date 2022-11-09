@@ -34,6 +34,16 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
+    public void addRole(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    public void deleteRole(Role role) {
+        this.roles.remove(role);
+        role.getUsers().remove(this);
+    }
+
     public User() {}
 
     public User(String userName, String password, String city, String email, List<Role> roles) {
